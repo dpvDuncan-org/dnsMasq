@@ -6,14 +6,14 @@ USERNAME=$(getent passwd $PUID | cut -d: -f1)
 
 if [ ! $GROUPNAME ]
 then
-        addgroup -g $PGID <groupname>
-        GROUPNAME=<groupname>
+        addgroup -g $PGID dnsmasq_group
+        GROUPNAME=dnsmasq_group
 fi
 
 if [ ! $USERNAME ]
 then
-        adduser -G $GROUPNAME -u $PUID -D <username>
-        USERNAME=<username>
+        adduser -G $GROUPNAME -u $PUID -D dnsmasq_user
+        USERNAME=dnsmasq_user
 fi
 
-su $USERNAME -c ''
+dnsmasq -C /config/dnsmasq.conf -8 - -R -k 2>&1 | su $USERNAME -c 'tee -a /config/dnsmasq.log'

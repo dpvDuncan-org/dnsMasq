@@ -12,6 +12,8 @@ ENV PGID=0
 COPY scripts/start.sh /
 
 RUN apk -U --no-cache upgrade
+RUN apk -U --no-cache add dnsmasq
+RUN rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 RUN mkdir /config
 RUN chmod -R 777 /start.sh /config
@@ -19,7 +21,7 @@ RUN chmod -R 777 /start.sh /config
 RUN rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/bin/qemu-*-static
 
 # ports and volumes
-EXPOSE 0
+EXPOSE 53 53/udp
 VOLUME /config
 
 CMD ["/start.sh"]
